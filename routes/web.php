@@ -5,6 +5,14 @@ use App\Http\Controllers\OrdenTrabajoController;
 
 Route::redirect('/', '/api/documentation');
 
+Route::get('/debug-paths', function () {
+    return [
+        'base_path' => base_path(),
+        'storage_path' => storage_path(),
+        'view_compiled_path' => config('view.compiled'),
+    ];
+});
+
 /*
  Route::get('/', function () {
     return view('welcome');
