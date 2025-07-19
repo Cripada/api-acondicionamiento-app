@@ -1,9 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use L5Swagger\Http\Controllers\SwaggerController;
 use App\Http\Controllers\OrdenTrabajoController;
 
 Route::redirect('/', '/api/documentation');
+
+Route::get('/api/documentation', [SwaggerController::class, 'api']);
 
 Route::get('/debug-paths', function () {
     return [
