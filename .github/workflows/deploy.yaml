@@ -18,34 +18,6 @@ jobs:
         with:
           php-version: '8.2'
 
-      - name: Instalar dependencias PHP
-        run: composer install --no-dev --prefer-dist --no-scripts --no-progress
-        working-directory: ./
+      - name: Preparar Entorno Swagger
+        run: php artisan l5-swagger:generate
 
-      - name: Preparar entorno Laravel
-        run: |
-          cp .env.production .env
-          php artisan l5-swagger:generate || echo "Swagger no configurado"
-        working-directory: ./
-
-      - name: Deploy a hosting compartido vía FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: ${{ secrets.FTP_DESTINATION }}
-          local-dir: ./
-          exclude: |
-            **/.git*
-            **/node_modules/**
-            **/vendor/**
-            .github/
-            tests/
-            README.md
-            package.json
-            vite.config.*
-            postcss.config.js
-            tailwind.config.js
-            .env
-            .env.*
