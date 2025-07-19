@@ -1,0 +1,51 @@
+name: Sharedhosting Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v3
+
+      - name: Configurar entorno PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+
+      - name: Instalar dependencias PHP
+        run: composer install --no-dev --prefer-dist --no-scripts --no-progress
+
+      - name: Preparar entorno Laravel
+        run: |
+          cp .env.production .env
+          php artisan config:cache
+          php artisan route:cache
+          php artisan l5-swagger:generate || echo "Swagger no configurado"
+
+      - name: Deploy a hosting compartido vía FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_DESTINATION }}
+          local-dir: ./
+          exclude: |
+            **/.git*
+            **/node_modules/**
+            **/vendor/**
+            .github/
+            tests/
+            README.md
+            package.json
+            vite.config.*
+            postcss.config.js
+            tailwind.config.js
+            .env
+            .env.*
