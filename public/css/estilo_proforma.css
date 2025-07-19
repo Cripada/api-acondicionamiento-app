@@ -1,0 +1,285 @@
+@page {
+    margin-top: 50px; /* Margen por defecto para todas las páginas */
+    margin-right: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+}
+
+.page-break {
+    page-break-before: always;
+}
+
+.first-page {
+    margin-top: -50px; /* Neutraliza el margen superior inicial */
+    padding-top: 0;
+}
+
+body > *:first-child {
+    margin-top: -50px !important;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.avoid-break {
+    page-break-inside: avoid;
+    break-inside: avoid; /* Compatibilidad adicional */
+}
+
+/* Contenedor general del encabezado */
+.headerDos {
+    position: relative;
+    background: #ffffff;
+    overflow: hidden;
+    height: 130px;
+    z-index: 1;
+}
+
+/* Triángulo decorativo naranja (detrás de todo el contenido) */
+.headerDos::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top: 150px linear-gradient(135deg, #fbff00, #f4c542, #f39c12);
+    border-left: 100px solid transparent;
+    height: 150px;
+    width: 50%;
+    z-index: 0; /* más bajo que todo lo demás */
+}
+
+/* Encabezado azul */
+.header {
+    background: #04123f;
+    color: white;
+    padding: 30px 40px;
+    position: relative;
+    overflow: hidden;
+    height: 60px;
+    margin-bottom: 10px;
+    z-index: 2;
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 1.2); /* sombra hacia abajo */
+}
+
+/* Triángulo decorativo azul oscuro */
+.header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top: 120px solid #04123f;
+    border-left: 83px solid transparent;
+    height: 10px;
+    width: 50%;
+    z-index: 1;
+}
+
+.header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top: 120px solid #04123f;
+    border-left: 83px solid transparent;
+    height: 10px;
+    width: 61%;
+}
+
+/* Triángulo derecho (azul) */
+.header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top: 150px solid #f39c12;
+    border-left: 100px solid transparent;
+    height: 150px;
+    width: 50%;
+    z-index: 1;
+}
+
+/* Triángulo derecho (azul) */
+.headerDos::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-top: 150px solid #f39c12;
+    border-left: 100px solid transparent;
+    height: 150px;
+    width: 50%;
+    z-index: 1;
+}
+
+/* Z-index alto para el contenido principal */
+.header-left,
+.header-right,
+.tagline,
+.invoice-label,
+.invoice-info {
+    position: relative;
+    z-index: 3; /* por encima de todos los triángulos */
+}
+
+/* Izquierda: logo y frase */
+.header-left {
+    float: left;
+}
+
+.header-left .logo {
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #f39c12;
+}
+
+.header-left .tagline {
+    font-size: 12px;
+    color: #ccc;
+    margin-top: 4px;
+}
+
+/* Derecha: título y datos */
+.header-right {
+    float: right;
+    text-align: right;
+}
+
+.header-right .invoice-label {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.header-right .invoice-info {
+    font-size: 13px;
+    color: #eee;
+}
+
+/* Limpieza del float */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.section {
+    padding: 0px 40px;
+}
+
+.section h2 {
+    color: #0b0d2d;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.info p {
+    margin: 3px 0;
+    font-size: 14px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 5px;
+}
+
+.table th {
+    background-color: #f39c12;
+    border: 2px solid #ffffff;
+    color: white;
+    padding: 4px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.table td {
+    padding: 3px;
+    border: 1px solid #ddd;
+    font-size: 12px;
+}
+
+.table tfoot td {
+    font-weight: bold;
+    text-align: right;
+}
+
+.total {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    font-size: 12px;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 3px solid #f39c12;
+    background-color: #04123f;
+    background: #04123f;
+    text-align: center;
+    font-size: 12px;
+    padding: 20px 40px;
+    margin-top: 40px;
+}
+
+.urgente {
+    color: red;
+    font-weight: bold;
+}
+.nproforma {
+    color: rgb(228, 118, 15);
+    font-weight: bold;
+    text-align: right;
+    font-size: 22px;
+}
+
+/*TOTALES*/
+.section-totales {
+    margin: 0px 40px;
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.1);
+}
+.section-totales h2 {
+    color: #0b0d2d;
+    font-size: 18px;
+    border-bottom: 1px solid #ddd;
+}
+
+.totales-box {
+    text-align: right;
+    margin: 5px 40px;
+    padding: 0px 10px 0px 0px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    margin-left: auto;
+    width: 200px;
+}
+
+.totales-box p {
+    margin: 3px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.totales-box p span {
+    font-weight: 600;
+    color: #0b0d2d;
+    /* display: inline-block;*/
+    width: 100px;
+}
+
+.total-final {
+    font-size: 16px;
+    font-weight: bold;
+    color: #f39c12;
+}
