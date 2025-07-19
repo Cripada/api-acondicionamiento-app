@@ -39,7 +39,6 @@ jobs:
           exclude: |
             **/.git*
             **/node_modules/**
-            **/vendor/**
             .github/
             tests/
             README.md
