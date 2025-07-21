@@ -29,6 +29,16 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ReportesController;
 use App\Models\AsignarSede;
 
+use Illuminate\Support\Facades\DB;
+Route::get('/test-db', function () {
+    try {
+        DB::connection()->getPdo();
+        return "✅ ¡Conexión exitosa a SQL Server!";
+    } catch (\Exception $e) {
+        return "❌ Error: " . $e->getMessage();
+    }
+});
+
 /*
  * SELECT
  */
@@ -292,7 +302,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/proformas', [ProformaController::class, 'index'])->middleware(CheckPermisos::class . ':proformas,Ver listado');
     Route::get('/proformas/paginated', [ProformaController::class, 'paginated'])->middleware(CheckPermisos::class . ':proformas,Ver listado');
     Route::get('/proformas/para-orden-de-trabajo', [ProformaController::class, 'ProformasParaOT'])->middleware(CheckPermisos::class . ':proformas,Ver listado');
-    
+
     Route::get('/proformas-por-aprobar/lista', [ProformaController::class, 'proformaPorAutorizar'])->middleware(CheckPermisos::class . ':proformas,Ver listado');
     Route::get('/proformas/{id}/visualizar', [ProformaController::class, 'visualizarPdf'])->middleware(CheckPermisos::class . ':proformas,Ver PDF');
     Route::get('/proformas/{id}/descargar', [ProformaController::class, 'descargarPdf'])->middleware(CheckPermisos::class . ':proformas,Descargar PDF');
