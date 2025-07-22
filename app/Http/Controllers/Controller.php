@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 
 /**
  * @OA\Info(
- *     title="API sistema de 'CONTROL DE DESPACHOS'",
+ *     title="API sistema de 'SERVICIOS DE ACONDICIONAMIENTO'",
  *     version="1.0.0",
- *     description="La API sistema de CONTROL DE DESPACHOS permite a los usuarios gestionar y acceder de manera eficiente a la información relacionada con los despachos realizados. Proporciona endpoints seguros y escalables para realizar operaciones y consultas sobre los detalles de los productos, bodega y despachos realizados. Con una estructura bien definida y soporte para paginación, la API facilita la integración con aplicaciones externas y mejora la visibilidad y en el control de despachos en tiempo real.",
+ *     description="La acondicionamiento API - servicio de ACONDICIONAMIENTO permite a los usuarios gestionar y acceder de manera eficiente a la información relacionada con los procesos de acondicionamiento. Proporciona endpoints seguros y escalables para realizar operaciones y consultas sobre productos, etapas del acondicionamiento y recursos involucrados. Con una estructura bien definida y soporte para paginación, la API facilita la integración con aplicaciones externas y mejora la visibilidad y control de los servicios de acondicionamiento en tiempo real.",
  * ),
  *     @OA\Tag(
  *         name="Usuarios",
