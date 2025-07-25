@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
+use App\Http\Requests\Usuarios\UpdateUsuarioRequest;
+use App\Http\Requests\Usuarios\RegisterUsuarioRequest;
+
 class AuthController extends Controller
 {
     /**
@@ -161,41 +164,21 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function register(Request $request): JsonResponse
+    public function register(RegisterUsuarioRequest $request): JsonResponse
     {
         // Auditoría del contexto
         AuditoriaService::setContextInfo('RegistroDeUsuario');
 
-        // ✅ Convertir "estado" a booleano si viene como texto
-        if ($request->has('estado')) {
-            $request->merge([
-                'estado' => filter_var($request->input('estado'), FILTER_VALIDATE_BOOLEAN),
-            ]);
-        }
-
-        // Validación
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:50',
-            'apellido' => 'required|string|max:50',
-            'correo' => 'required|email|unique:users',
-            'telefono' => 'nullable|string|max:20',
-            'estado' => 'sometimes|boolean',
-            'idrol' => 'required|exists:roles,idrol',
-            'foto' => 'nullable|image|max:2048',
-            'password' => 'nullable|string|min:6',
-        ]);
+        // Validación de campos
+        $validatedData = $request->validated();
 
         // Foto
-        $rutaFoto = null;
-        if ($request->hasFile('foto')) {
-            $rutaFoto = $request->file('foto')->store('fotos_usuarios', 'public');
-        }
+        $rutaFoto = $request->hasFile('foto')
+            ? $request->file('foto')->store('fotos_usuarios', 'public')
+            : 'fotos_usuarios/default.jpg';
 
         // Password
-        if (!isset($validatedData['password']) || empty($validatedData['password'])) {
-            $validatedData['password'] = Str::random(8);
-        }
-        $password = $validatedData['password'];
+        $password = $validatedData['password'] ?? Str::random(8);
 
         // Crear usuario
         $user = User::create([
@@ -206,7 +189,7 @@ class AuthController extends Controller
             'password' => Hash::make($password),
             'estado' => $validatedData['estado'] ?? true,
             'idrol' => $validatedData['idrol'],
-            'foto' => $rutaFoto ?? 'fotos_usuarios/default.jpg',
+            'foto' => $rutaFoto,
         ]);
 
         return response()->json(
@@ -299,7 +282,7 @@ class AuthController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, $idusuario): JsonResponse
+    public function update(UpdateUsuarioRequest  $request, $idusuario): JsonResponse
     {
         $usuario = User::find($idusuario);
 
@@ -310,23 +293,8 @@ class AuthController extends Controller
         // Auditoría del contexto
         AuditoriaService::setContextInfo('ActualizacionDeUsuario');
 
-        if ($request->has('estado')) {
-            $request->merge([
-                'estado' => filter_var($request->input('estado'), FILTER_VALIDATE_BOOLEAN),
-            ]);
-        }
-
         // Validación de campos
-        $validatedData = $request->validate([
-            'nombre' => 'required|string|max:50',
-            'apellido' => 'required|string|max:50',
-            'correo' => 'required|email|unique:users,correo,' . $idusuario,
-            'telefono' => 'nullable|string|max:20',
-            'password' => 'nullable|string|min:6',
-            'estado' => 'sometimes|boolean',
-            'idrol' => 'required|exists:roles,idrol',
-            'foto' => 'nullable|image|max:2048',
-        ]);
+        $validatedData = $request->validated();
 
         // Actualizar campos básicos
         $usuario->nombre = $validatedData['nombre'];
@@ -341,15 +309,15 @@ class AuthController extends Controller
             $usuario->password = Hash::make($validatedData['password']);
         }
 
-        // Cambiar foto (si viene)
-        if ($request->hasFile('foto')) {
-            // ✅ Borrar la foto anterior si no es default
+        // Cambiar foto si viene una nueva
+        if (isset($validatedData['foto'])) {
+            // Eliminar la anterior si no es la por defecto
             if ($usuario->foto && $usuario->foto !== 'fotos_usuarios/default.jpg') {
                 Storage::disk('public')->delete($usuario->foto);
             }
 
-            // ✅ Guardar la nueva
-            $rutaFoto = $request->file('foto')->store('fotos_usuarios', 'public');
+            // Guardar nueva foto
+            $rutaFoto = $validatedData['foto']->store('fotos_usuarios', 'public');
             $usuario->foto = $rutaFoto;
         }
 
@@ -358,7 +326,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Usuario actualizado con éxito.',
-            'data' => $usuario,
+            'data' => $usuario
         ]);
     }
 

@@ -26,6 +26,20 @@ class AsignarSedeSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'idusuario' => 2,
+                'idsede' => 1,
+                'estado' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'idusuario' => 2,
+                'idsede' => 2,
+                'estado' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ];
 
         foreach ($asignarSedes as $asignarSede) {
